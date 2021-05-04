@@ -25,7 +25,7 @@ iXBRL.  Or not.
 - The CT600 form changes periodically, which will invalidate the annotations
   specification.  The annotations spec here has absolute PDF form positions.
 
-## Testing
+## Trying it out
 
 There is a set of computations here:
 
@@ -36,6 +36,13 @@ There is a set of computations here:
 You should get an output file in output.pdf.
 
 ![alt text](screenshot.png)
+
+## Specifications
+
+The file `spec.json` describes how to annotate the form.  Each entry is a
+list, first field is iXBRL tag name.  Second is annotation type, which is a
+type name from the `annotations.py` file.  The rest of the entry is arguments
+passed to the constructor.
 
 ## Warranty
 
