@@ -6,14 +6,13 @@
 
 import datetime
 import xml.etree.ElementTree as ET
-import json
 import sys
 import argparse
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
 from computations import get_computations
-from annotations import create_annotations, get_page
+from annotations import create_annotations, get_page, get_spec
 
 def create_pdf(outf, template, annotations):
 
@@ -47,6 +46,9 @@ parser.add_argument('--output', '-o',
 parser.add_argument('--ct600', '-c',
                     default="CT600.pdf",
                     help='Input CT600 form')
+parser.add_argument('--spec', '-s',
+                    default="spec.json",
+                    help='Annotation specificiations file (default: spec.json)')
 parser.add_argument('--company-type', '-C', default="06",
                     help='Company type (two digit, default 06')
 parser.add_argument('--declaration-name', '-DN', required=True,
@@ -72,7 +74,8 @@ values["declaration-name"] = args.declaration_name
 values["declaration-date"] = args.declaration_date.strftime("%d %B %Y")
 values["declaration-status"] = args.declaration_status
 
-annotations = create_annotations(values)
+spec = get_spec(args.spec)
+annotations = create_annotations(values, spec)
 
 template = PdfFileReader(open(args.ct600, "rb"))
 sys.stderr.write("Opened %s.\n" % args.ct600)

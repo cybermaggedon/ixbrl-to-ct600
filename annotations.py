@@ -4,6 +4,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 import datetime
 import io
+import json
 
 # An annotation, writes a string on a particular page at position x, y
 class WriteString:
@@ -120,151 +121,22 @@ class WriteSpaceDate:
         self.m.do(can, "%02d" % d.month)
         self.y.do(can, "%04d" % d.year)
 
-# A list of mappings from iXBRL tag name to annotation.
-spec = {
+# Should only use trusted input!
+def get_spec(file):
 
-    "ct-comp:CompanyName": WriteString(0, 76, 208),
+    spec = json.load(open(file))
+    m = {}
 
-    "uk-core:UKCompaniesHouseRegisteredNumber": SpaceString(
-        0, 148, 199.5, 5.47
-    ),
+    for items in spec:
+        tp = items[1]
+        type = globals()[items[1]]
+        m[items[0]] = type(*items[2:])
 
-    "ct-comp:TaxReference": SpaceString(0, 137, 190.5, 5.47),
-
-    "ct-comp:StartOfPeriodCoveredByReturn": WriteSpaceDate(
-        0, 23.5, 108, 37, 108, 50.5, 108, 5.47
-    ),
-
-    "ct-comp:EndOfPeriodCoveredByReturn": WriteSpaceDate(
-        0, 143, 108, 156.5, 108, 170, 108, 5.47
-    ),
-
-    "company-type": SpaceString(0, 181, 182, 5.47),
-
-    "attached-for-this-period": WriteBool(1, 186.2, 265.5),
-
-    "ct-comp:FinancialYear1CoveredByTheReturn": WriteString(3, 32, 93),
-
-    "ct-comp:FinancialYear2CoveredByTheReturn": WriteString(3, 32, 68),
-
-    "ct-comp:MainPoolAnnualInvestmentAllowance": SpacePounds(
-        7, 60.5, 255.8, 5.5, 11
-    ),
-    "ct-comp:AdjustedTradingProfitOfThisPeriod": SpacePounds(
-        1, 117.5, 68.7, 5.5, 11
-    ),
-    "ct-comp:TradingLossesBroughtForward": SpacePounds(
-        1, 117.5, 57, 5.5, 11
-    ),
-    "ct-comp:NetTradingProfits": SpacePounds(
-        1, 117.5, 46, 5.5, 11
-    ),
-    "ct-comp:NetChargeableGains": SpacePounds(
-        2, 118, 148.5, 5.5, 11
-    ),
-    "ct-comp:ProfitsBeforeOtherDeductionsAndReliefs": SpacePounds(
-        2, 118, 94.5, 5.5, 11
-    ),
-    "ct-comp:TotalManagementExpenses": SpacePounds(
-        2, 118, 60.5, 5.5, 11
-    ),
-    "ct-comp:TotalDeductionsAndReliefs": SpacePounds(
-        3, 117.5, 211, 5.5, 11
-    ),
-
-    "ct-comp:ProfitsBeforeChargesAndGroupRelief": SpacePounds(
-        3, 117.5, 198, 5.5, 11
-    ),
-
-    "ct-comp:QualifyingDonations": SpacePounds(
-        3, 117.5, 186, 5.5, 11
-    ),
-
-    "ct-comp:GroupReliefClaimed": SpacePounds(
-        3, 117.5, 177.5, 5.5, 11
-    ),
-
-    "ct-comp:GroupReliefClaimedForCarriedForwardLosses": SpacePounds(
-        3, 117.5, 169.5, 5.5, 11
-    ),
-
-    "ct-comp:TotalProfitsChargeableToCorporationTax": SpacePounds(
-        3, 117.5, 161, 5.5, 11
-    ),
-
-    "ct-comp:FY1AmountOfProfitChargeableAtFirstRate": WritePounds(
-        3, 68, 93
-    ),
-
-    "ct-comp:FY2AmountOfProfitChargeableAtFirstRate": WritePounds(
-        3, 68, 68
-    ),
-
-    "ct-comp:FY1FirstRateOfTax": WritePounds(
-        3, 128, 93
-    ),
-
-    "ct-comp:FY2FirstRateOfTax": WritePounds(
-        3, 128, 68
-    ),
-
-    "ct-comp:FY1TaxAtFirstRate": WriteMoney(
-        3, 162, 93
-    ),
-
-    "ct-comp:FY2TaxAtFirstRate": WriteMoney(
-        3, 162, 68
-    ),
-
-    "ct-comp:CorporationTaxChargeable": SpaceMoney(
-        3, 117.5, 37, 181, 37, 5.5, 11
-    ),
-
-    "ct-comp:MarginalRateReliefForRingFenceTradesPayable": SpaceMoney(
-        3, 117.5, 28.5, 180.5, 28.5, 5.5, 11
-    ),
-
-    "ct-comp:CorporationTaxChargeablePayable": SpaceMoney(
-        3, 117.5, 19.5, 180.5, 19.5, 5.5, 11
-    ),
-
-    "ct-comp:TotalReliefsAndDeductionsInTermsOfTaxPayable": SpaceMoney(
-        4, 117.5, 223, 180.5, 223, 5.5, 11
-    ),
-
-    "ct-comp:NetCorporationTaxPayable": SpaceMoney(
-        4, 117.5, 145.5, 180.5, 145.5, 5.5, 11
-    ),
-
-    "ct-comp:TaxChargeable": SpaceMoney(
-        4, 117.5, 54.5, 180.5, 54.5, 5.5, 11
-    ),
-
-    "ct-comp:TaxPayable": SpaceMoney(
-        5, 117.5, 242.5, 180.5, 242.5, 5.5, 11
-    ),
-
-    "declaration-name": WriteString(
-        10, 25, 50
-    ),
-
-    "declaration-date": WriteSpaceDate(
-        10, 23.5, 36, 37, 36, 50.5, 36, 5.5
-    ),
-
-    "declaration-status": WriteString(
-        10, 25, 22
-    ),
-
-    "uk-core:TurnoverRevenue": SpacePounds(
-        1, 79, 101, 5.5, 18
-    ),
-
-
-}
+    return m
 
 # Feed in a set of iXBRL-to-value mappings, get the set of annotations back.
-def create_annotations(values):
+def create_annotations(values, spec):
+
     pages = {}
 
     for k, v in values.items():

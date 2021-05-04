@@ -22,6 +22,8 @@ iXBRL.  Or not.
   the values are right for you, and possibly adding extra annotations to the
   form which aren't covered.
 - It doesn't know about all the CT600 fields.
+- The CT600 form changes periodically, which will invalidate the annotations
+  specification.  The annotations spec here has absolute PDF form positions.
 
 ## Testing
 
