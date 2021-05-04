@@ -1,5 +1,5 @@
 
-# `ixbrl-to-cr600`
+# `ixbrl-to-ct600`
 
 ## Overview
 
@@ -18,8 +18,9 @@ iXBRL.  Or not.
 
 - There is no warranty.
 - This is likely incomplete - it does what I want, but you shouldn't be
-  playing with this project unless you're prepared to do a load of hacking
-  about to get it to work for you.
+  playing with this project unless you're prepared to do some work checking
+  the values are right for you, and possibly adding extra annotations to the
+  form which aren't covered.
 - It doesn't know about all the CT600 fields.
 
 ## Testing
