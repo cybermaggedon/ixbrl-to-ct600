@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+
+# Reads a UK corporation tax computations file (iXBRL containing HMRC
+# corporation tax schema), and annotates a CT600 PDF template with
+# the numbers.
+
+import datetime
+import xml.etree.ElementTree as ET
+import json
+import sys
+import argparse
+
+from PyPDF2 import PdfFileWriter, PdfFileReader
+
+from computations import get_computations
+from annotations import create_annotations, get_page
+
+def create_pdf(outf, template, annotations):
+
+
+    output = PdfFileWriter()
+
+    for page in range(0, template.getNumPages()):
+        page_data = template.getPage(page)
+        output.addPage(page_data)
+
+        if page in annotations:
+
+            overlay = get_page(annotations, page)
+
+            overlay_pdf = PdfFileReader(overlay)
+
+            page_data.mergePage(overlay_pdf.getPage(0))
+
+    output.write(outf)
+
+# Command-line argument parser
+parser = argparse.ArgumentParser(
+    description="iXBRL to CT600"
+)
+parser.add_argument('--input', '-i',
+                    default="comps.html",
+                    help='Input computations file (default: comps.html)')
+parser.add_argument('--output', '-o',
+                    default="output.pdf",
+                    help='Output PDF file')
+parser.add_argument('--ct600', '-c',
+                    default="CT600.pdf",
+                    help='Input CT600 form')
+parser.add_argument('--company-type', '-C', default="06",
+                    help='Company type (two digit, default 06')
+parser.add_argument('--declaration-name', '-DN', required=True,
+                    help='Name of person signing the declaration.')
+parser.add_argument('--declaration-date', '-DD',
+                    type=datetime.date.fromisoformat,
+                    default=datetime.datetime.now().date(),
+                    help='Date of declaration (default: today).')
+parser.add_argument('--declaration-status', '-DS', default="Director",
+                    help='Status of person signing the declaration '
+                    '(default: Director')
+
+# Parse arguments
+args = parser.parse_args(sys.argv[1:])
+
+tree = ET.parse(args.input)
+values = get_computations(tree)
+sys.stderr.write("Read %s.\n" % args.input)
+
+values["company-type"] = args.company_type
+values["attached-for-this-period"] = True
+values["declaration-name"] = args.declaration_name
+values["declaration-date"] = args.declaration_date.strftime("%d %B %Y")
+values["declaration-status"] = args.declaration_status
+
+annotations = create_annotations(values)
+
+template = PdfFileReader(open(args.ct600, "rb"))
+sys.stderr.write("Opened %s.\n" % args.ct600)
+
+# finally, write "output" to a real file
+with open(args.output, "wb") as f:
+    create_pdf(f, template, annotations)
+
+sys.stderr.write("Wrote %s.\n" % args.output)
+
