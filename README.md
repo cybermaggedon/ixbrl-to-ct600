@@ -20,7 +20,7 @@ iXBRL.  Or not.
 - This is likely incomplete - it does what I want, but you shouldn't be
   playing with this project unless you're prepared to do a load of hacking
   about to get it to work for you.
-- It doesn't know about all the fields.
+- It doesn't know about all the CT600 fields.
 
 ## Testing
 
@@ -29,6 +29,10 @@ There is a set of computations here:
 ```
 ./ixbrl-to-ct600  -DN 'Sarah McAcre' -C 06
 ```
+
+You should get an output file in output.pdf.
+
+![alt text](screenshot.png)
 
 ## Warranty
 
