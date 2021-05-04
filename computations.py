@@ -1,4 +1,7 @@
 
+# Takes an ElementTree document and extracts a dict mapping iXBRL tag names
+# to values.  This is intended for UK corporation tax schema, there's a
+# hard-coded UK-specific to get the company number.
 def get_computations(doc):
     
     values = {}
@@ -13,6 +16,7 @@ def get_computations(doc):
         if elt.text:
             values[elt.get("name")] = elt.text
 
+    # The UK Companies House regstered number.
     elt = doc.find(".//xbrli:entity/xbrli:identifier[1]", ns)
     values["uk-core:UKCompaniesHouseRegisteredNumber"] = elt.text
 
