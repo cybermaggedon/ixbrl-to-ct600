@@ -60,6 +60,8 @@ parser.add_argument('--declaration-date', '-DD',
 parser.add_argument('--declaration-status', '-DS', default="Director",
                     help='Status of person signing the declaration '
                     '(default: Director')
+parser.add_argument('--verbose', '-v', action='store_true',
+                    help='Turn on verbose output.')
 
 # Parse arguments
 args = parser.parse_args(sys.argv[1:])
@@ -67,6 +69,10 @@ args = parser.parse_args(sys.argv[1:])
 tree = ET.parse(args.input)
 values = get_computations(tree)
 sys.stderr.write("Read %s.\n" % args.input)
+
+if args.verbose:
+    for k, v in values.items():
+        print("%-50s: %s" % (k, v))
 
 values["company-type"] = args.company_type
 values["attached-for-this-period"] = True

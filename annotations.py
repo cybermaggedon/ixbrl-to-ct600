@@ -99,7 +99,7 @@ class SpaceMoney:
         pounds = fmt % pounds
         self.d.do(can, pounds)
 
-        pence = float(s) - round(float(s))
+        pence = float(s) - int(float(s))
         pence = round(100 * pence + 0.5)
         
         pence = "%02d" % pence
