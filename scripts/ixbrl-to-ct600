@@ -11,11 +11,10 @@ import argparse
 
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
-from computations import get_computations
-from annotations import create_annotations, get_page, get_spec
+from ixbrl_to_ct600.computations import get_computations
+from ixbrl_to_ct600.annotations import create_annotations, get_page, get_spec
 
 def create_pdf(outf, template, annotations):
-
 
     output = PdfFileWriter()
 
