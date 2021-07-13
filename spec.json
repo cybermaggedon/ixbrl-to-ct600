@@ -33,8 +33,8 @@
     ["ct-comp:TotalReliefsAndDeductionsInTermsOfTaxPayable", "SpaceMoney", 4, 117.5, 223, 180.5, 223, 5.5, 11], 
     ["ct-comp:NetCorporationTaxPayable", "SpaceMoney", 4, 117.5, 145.5, 180.5, 145.5, 5.5, 11], 
     ["ct-comp:TaxChargeable", "SpaceMoney", 4, 117.5, 54.5, 180.5, 54.5, 5.5, 11], 
+    ["ct-comp:TaxPayable", "SpaceMoney", 4, 117.5, 24, 180.5, 24, 5.5, 11],     ["declaration-name", "WriteString", 10, 25, 50], 
     ["ct-comp:TaxPayable", "SpaceMoney", 5, 117.5, 242.5, 180.5, 242.5, 5.5, 11], 
-    ["declaration-name", "WriteString", 10, 25, 50], 
     ["declaration-date", "WriteSpaceDate", 10, 23.5, 36, 37, 36, 50.5, 36, 5.5], 
     ["declaration-status", "WriteString", 10, 25, 22], 
     ["uk-core:TurnoverRevenue", "SpacePounds", 1, 79, 101, 5.5, 18]

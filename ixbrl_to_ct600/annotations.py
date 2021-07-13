@@ -130,7 +130,10 @@ def get_spec(file):
     for items in spec:
         tp = items[1]
         type = globals()[items[1]]
-        m[items[0]] = type(*items[2:])
+
+        if items[0] not in m:
+            m[items[0]] = []
+        m[items[0]].append(type(*items[2:]))
 
     return m
 
@@ -140,13 +143,18 @@ def create_annotations(values, spec):
     pages = {}
 
     for k, v in values.items():
+
         if k in spec:
 
-            page = spec[k].page
-            if page not in pages:
-                pages[page] = []
+            anns = spec[k]
 
-            pages[page].append((spec[k], v))
+            for ann in anns:
+
+                page = ann.page
+                if page not in pages:
+                    pages[page] = []
+
+                pages[page].append((ann, v))
 
     return pages
 
@@ -168,3 +176,4 @@ def get_page(annotations, page):
     buffer.seek(0)
 
     return buffer
+
