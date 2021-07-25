@@ -78,6 +78,13 @@ values["attached-for-this-period"] = True
 values["declaration-name"] = args.declaration_name
 values["declaration-date"] = args.declaration_date.strftime("%d %B %Y")
 values["declaration-status"] = args.declaration_status
+values["r&d-sme"] = True
+values["r&d-large"] = False
+values["r&d-enhanced"] = str(
+    float(values["ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME"])
+    +
+    float(values["ct-comp:AdjustmentsCreativeProductionCompanyAdjustment"])
+)
 
 spec = get_spec(args.spec)
 annotations = create_annotations(values, spec)

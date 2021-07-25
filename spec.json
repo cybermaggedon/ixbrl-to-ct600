@@ -35,6 +35,13 @@
     ["ct-comp:TaxChargeable", "SpaceMoney", 4, 117.5, 54.5, 180.5, 54.5, 5.5, 11], 
     ["ct-comp:TaxPayable", "SpaceMoney", 4, 117.5, 24, 180.5, 24, 5.5, 11],     ["declaration-name", "WriteString", 10, 25, 50], 
     ["ct-comp:TaxPayable", "SpaceMoney", 5, 117.5, 242.5, 180.5, 242.5, 5.5, 11], 
+    ["r&d-sme", "WriteBool", 6, 186.2, 115],
+    ["r&d-large", "WriteBool", 6, 186.2, 100.5],
+    ["ct-comp:AdjustmentsAdditionalDeductionForQualifyingRDExpenditureSME",
+     "SpacePounds", 6, 79.2, 91, 5.5, 18],
+    ["ct-comp:AdjustmentsCreativeProductionCompanyAdjustment",
+     "SpacePounds", 6, 79.2, 80.5, 5.5, 18],
+    ["r&d-enhanced", "SpacePounds", 6, 79.2, 70.7, 5.5, 18],
     ["declaration-date", "WriteSpaceDate", 10, 23.5, 36, 37, 36, 50.5, 36, 5.5], 
     ["declaration-status", "WriteString", 10, 25, 22], 
     ["uk-core:TurnoverRevenue", "SpacePounds", 1, 79, 101, 5.5, 18]
